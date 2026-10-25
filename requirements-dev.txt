@@ -1,0 +1,4 @@
+# Dépendances pour lancer les tests Python en local : pip install -r requirements-dev.txt
+pandas
+openpyxl
+pytest

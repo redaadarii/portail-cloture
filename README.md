@@ -33,10 +33,18 @@ databricks bundle deploy            # déployer en dev
 databricks bundle run cloture_setup # créer le modèle de données
 ```
 
+Tests Python des contrôles (en local, sans Databricks) :
+
+```bash
+pip install -r requirements-dev.txt
+pytest tests/
+```
+
 ## Avancement
 
 - [x] Phase 1 — Fondations : bundle structuré, modèle de données, référentiel
-- [ ] Phase 2 — Traitements : job générique, tâche conditionnelle, écarts, dashboard
+- [x] Phase 2a — Traitements : import générique, contrôles testés, tâche conditionnelle, écarts
+- [ ] Phase 2b — Dashboard AI/BI rafraîchi par le job
 - [ ] Phase 3 — Application : socle Next.js, SQL Warehouse, identité et rôles
 - [ ] Phase 4 — Catalogue de traitements piloté par configuration
 - [ ] Phase 5 — Workflow de validation et historique

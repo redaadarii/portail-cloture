@@ -1,0 +1,56 @@
+# Job d'import générique (budget ou réel), avec calcul conditionnel des écarts.
+#
+#   import ──▶ est_reel ? ──(true)──▶ calcul_ecarts
+#                    └─────(false)──▶ (fin : pour un budget, rien à calculer)
+
+resources:
+  jobs:
+    import_donnees:
+      name: import_donnees
+      max_concurrent_runs: 1 # deux imports simultanés de la même période se marcheraient dessus
+
+      # Paramètres du job : envoyés par le portail via l'API run-now (phase 5).
+      # Ils sont transmis automatiquement à toutes les tâches, sous forme de widgets.
+      parameters:
+        - name: type_donnees
+          default: budget
+        - name: periode
+          default: "2026-10"
+        - name: fichier
+          default: /Volumes/${var.catalog}/${var.schema}/fichiers/budget_2026_10.xlsx
+        - name: demande_id
+          default: ""
+
+      tasks:
+        - task_key: import
+          max_retries: 0 # une erreur de données ne se corrige pas en relançant
+          notebook_task:
+            notebook_path: ../src/traitements/import_donnees.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+
+        # Tâche conditionnelle (If/else) : elle n'exécute rien, elle évalue une condition.
+        - task_key: est_reel
+          depends_on:
+            - task_key: import
+          condition_task:
+            op: EQUAL_TO
+            left: "{{job.parameters.type_donnees}}"
+            right: reel
+
+        # Ne s'exécute que si la condition est vraie. Sinon : statut « Excluded », pas « Failed ».
+        - task_key: calcul_ecarts
+          depends_on:
+            - task_key: est_reel
+              outcome: "true"
+          max_retries: 0
+          notebook_task:
+            notebook_path: ../src/traitements/calcul_ecarts.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+
+      email_notifications:
+        on_failure:
+          - ${workspace.current_user.userName}
