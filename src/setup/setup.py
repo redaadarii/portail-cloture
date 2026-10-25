@@ -55,7 +55,8 @@ spark.sql(f"""
       ('RABAT',     'Rabat',      true),
       ('TANGER',    'Tanger',     true),
       ('MARRAKECH', 'Marrakech',  true),
-      ('AGADIR',    'Agadir',     false)
+      ('AGADIR',    'Agadir',     false),
+      ('FES',       'Fès',        true)
     AS t(code, nom, actif)
   ) AS source
   ON cible.code = source.code
