@@ -116,6 +116,42 @@ export const TRAITEMENTS: Traitement[] = [
       }),
     },
   },
+    {
+    cle: "export_ecarts",
+    titre: "Export des écarts",
+    description: "Génère un fichier des écarts d'une période, au format choisi, déposé dans le volume.",
+    categorie: "Export",
+    champs: [
+      periode,
+      {
+        nom: "format",
+        type: "liste",
+        libelle: "Format",
+        obligatoire: true,
+        options: {
+          valeurs: [
+            { valeur: "xlsx", libelle: "Excel (.xlsx)" },
+            { valeur: "csv", libelle: "CSV" },
+          ],
+        },
+      },
+      {
+        nom: "significatifs_seulement",
+        type: "booleen",
+        libelle: "Seulement les écarts significatifs",
+        obligatoire: false,
+        defaut: false,
+      },
+    ],
+    job: {
+      cle: "export_ecarts",
+      parametres: (v) => ({
+        periode: String(v.periode),
+        format: String(v.format),
+        significatifs_seulement: v.significatifs_seulement ? "true" : "false",
+      }),
+    },
+  },
 ];
 
 export function trouverTraitement(cle: string): Traitement | undefined {

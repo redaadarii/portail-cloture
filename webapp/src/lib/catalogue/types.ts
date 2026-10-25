@@ -80,7 +80,7 @@ export interface Traitement {
   cle: string;
   titre: string;
   description: string;
-  categorie: "Import" | "Calcul";
+  categorie: "Import" | "Calcul" | "Export";
   champs: Champ[];
   job: {
     /** Clé du job dans le bundle (resources/*.job.yml). */
