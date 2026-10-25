@@ -1,0 +1,23 @@
+# État local de la CLI Databricks
+.databricks/
+
+# Secrets : jamais dans Git
+.env
+.env.*
+!.env.example
+
+# Node.js
+node_modules/
+.next/
+coverage/
+
+# Python
+__pycache__/
+.venv/
+
+# Fichiers Excel : exclus, SAUF les jeux de test du projet (versionnés volontairement)
+*.xlsx
+!donnees_test/*.xlsx
+
+# macOS
+.DS_Store

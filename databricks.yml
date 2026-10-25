@@ -1,0 +1,30 @@
+# Portail de clôture mensuelle — définition du bundle.
+#
+# Différence avec le premier projet : ce fichier reste COURT.
+# Chaque ressource (jobs, app, dashboard) vit dans son propre fichier sous resources/,
+# inclus ci-dessous. C'est l'organisation standard dès qu'un projet grossit.
+
+bundle:
+  name: portail-cloture
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Catalogue Unity Catalog
+    default: workspace
+  schema:
+    description: Schéma du projet (différent selon l'environnement)
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-18ef0795-e41e.cloud.databricks.com
+    variables:
+      # Chaque environnement a SES données : un test en dev ne touche jamais la prod.
+      schema: cloture_dev
+
+  # La cible "prod" sera ajoutée en phase 7, avec un service principal dédié.

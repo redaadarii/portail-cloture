@@ -1,0 +1,14 @@
+# Job d'installation : crée le schéma, le volume, les tables et le référentiel.
+# Idempotent : on peut le relancer autant de fois qu'on veut.
+
+resources:
+  jobs:
+    cloture_setup:
+      name: cloture_setup
+      tasks:
+        - task_key: setup
+          notebook_task:
+            notebook_path: ../src/setup/setup.py # chemin RELATIF à ce fichier yml
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
