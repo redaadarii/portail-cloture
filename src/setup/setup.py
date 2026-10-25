@@ -47,13 +47,17 @@ spark.sql(f"""
 # MERGE = « insère si absent, met à jour si présent » : idempotent, contrairement à INSERT.
 spark.sql(f"""
   MERGE INTO {cs}.ref_entites AS cible
-  USING (VALUES
-    ('CASA',      'Casablanca', true),
-    ('RABAT',     'Rabat',      true),
-    ('TANGER',    'Tanger',     true),
-    ('MARRAKECH', 'Marrakech',  true),
-    ('AGADIR',    'Agadir',     false)
-  ) AS source(code, nom, actif)
+  USING (
+    -- MERGE n'accepte pas d'alias de colonnes sur sa source : on nomme les colonnes
+    -- dans un SELECT, puis on aliase seulement la sous-requête.
+    SELECT * FROM VALUES
+      ('CASA',      'Casablanca', true),
+      ('RABAT',     'Rabat',      true),
+      ('TANGER',    'Tanger',     true),
+      ('MARRAKECH', 'Marrakech',  true),
+      ('AGADIR',    'Agadir',     false)
+    AS t(code, nom, actif)
+  ) AS source
   ON cible.code = source.code
   WHEN MATCHED THEN UPDATE SET nom = source.nom, actif = source.actif
   WHEN NOT MATCHED THEN INSERT (code, nom, actif) VALUES (source.code, source.nom, source.actif)
