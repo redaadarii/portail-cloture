@@ -1,0 +1,53 @@
+# Application web du portail (Next.js), déployée sur Databricks Apps.
+#
+# Nouveauté par rapport au premier projet : toute la configuration d'exécution est ICI
+# (bloc « config »), plus de fichier app.yaml. Avantage : on peut y utiliser les variables
+# du bundle (${var.schema}…), donc la même app pointe sur cloture_dev en dev et cloture en prod.
+
+resources:
+  apps:
+    portail:
+      name: portail-cloture
+      description: Portail de clôture mensuelle — budget, réel, écarts, demandes de traitement
+      source_code_path: ../webapp
+
+      # Garde-fou : le bundle REFUSERA de supprimer cette app (souviens-toi de l'étape 4…).
+      lifecycle:
+        prevent_destroy: true
+
+      config:
+        command: ["npm", "run", "start"]
+        env:
+          # value_from : la valeur vient d'une ressource déclarée plus bas (ici, l'ID du warehouse)
+          - name: DATABRICKS_WAREHOUSE_ID
+            value_from: sql-warehouse
+          - name: CLOTURE_CATALOG
+            value: ${var.catalog}
+          - name: CLOTURE_SCHEMA
+            value: ${var.schema}
+          - name: GROUPE_ADMINS
+            value: cloture-admins
+          - name: GROUPE_OPERATEURS
+            value: cloture-operateurs
+          - name: GROUPE_LECTEURS
+            value: cloture-lecteurs
+
+      # Moindre privilège : l'app peut UTILISER le warehouse et LIRE deux tables, rien d'autre.
+      # (Les droits d'écriture sur « demandes » et le lancement du job viendront en phase 5.)
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+
+        - name: table-ref-entites
+          uc_securable:
+            securable_full_name: ${var.catalog}.${var.schema}.ref_entites
+            securable_type: TABLE
+            permission: SELECT
+
+        - name: table-ecarts
+          uc_securable:
+            securable_full_name: ${var.catalog}.${var.schema}.ecarts
+            securable_type: TABLE
+            permission: SELECT
