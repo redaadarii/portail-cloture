@@ -44,7 +44,7 @@ pytest tests/
 
 - [x] Phase 1 — Fondations : bundle structuré, modèle de données, référentiel
 - [x] Phase 2a — Traitements : import générique, contrôles testés, tâche conditionnelle, écarts
-- [ ] Phase 2b — Dashboard AI/BI rafraîchi par le job
+- [x] Phase 2b — Dashboard AI/BI rafraîchi par le job
 - [ ] Phase 3 — Application : socle Next.js, SQL Warehouse, identité et rôles
 - [ ] Phase 4 — Catalogue de traitements piloté par configuration
 - [ ] Phase 5 — Workflow de validation et historique
