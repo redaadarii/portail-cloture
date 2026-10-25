@@ -1,6 +1,6 @@
 # Job d'import générique (budget ou réel), avec calcul conditionnel des écarts.
 #
-#   import ──▶ est_reel ? ──(true)──▶ calcul_ecarts
+#   import ──▶ est_reel ? ──(true)──▶ calcul_ecarts ──▶ rafraichir_dashboard
 #                    └─────(false)──▶ (fin : pour un budget, rien à calculer)
 
 resources:
@@ -50,6 +50,15 @@ resources:
             base_parameters:
               catalog: ${var.catalog}
               schema: ${var.schema}
+
+        # Rafraîchit le dashboard dès que les écarts sont recalculés :
+        # les utilisateurs voient les nouveaux chiffres sans rien faire.
+        - task_key: rafraichir_dashboard
+          depends_on:
+            - task_key: calcul_ecarts
+          dashboard_task:
+            dashboard_id: ${resources.dashboards.ecarts.id}
+            warehouse_id: ${var.warehouse_id}
 
       email_notifications:
         on_failure:

@@ -1,0 +1,62 @@
+{
+  "datasets": [
+    {
+      "catalog": "workspace",
+      "displayName": "ecarts",
+      "name": "a4f0af3b",
+      "queryLines": [
+        "SELECT\n",
+        "  e.mois,\n",
+        "  e.entite,\n",
+        "  r.nom AS nom_entite,\n",
+        "  e.compte,\n",
+        "  e.libelle,\n",
+        "  e.budget,\n",
+        "  e.reel,\n",
+        "  e.ecart,\n",
+        "  e.ecart_pct,\n",
+        "  CASE WHEN ABS(e.ecart_pct) > 10 THEN 'Significatif' ELSE 'Normal' END AS niveau\n",
+        "FROM ecarts e\n",
+        "JOIN ref_entites r ON r.code = e.entite"
+      ],
+      "schema": "cloture_dev"
+    }
+  ],
+  "pages": [
+    {
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "position": {
+            "height": 1,
+            "width": 4,
+            "x": 3,
+            "y": 3
+          },
+          "widget": {
+            "name": "ecarts-budget-reel",
+            "spec": {
+              "encodings": {
+                "fields": []
+              },
+              "frame": {
+                "showTitle": true
+              },
+              "version": 2,
+              "widgetType": "filter-single-select"
+            }
+          }
+        }
+      ],
+      "layoutVersion": "GRID_V1",
+      "name": "d65fe302",
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "applyModeEnabled": false,
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    }
+  }
+}

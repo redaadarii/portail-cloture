@@ -1,0 +1,18 @@
+# Dashboard AI/BI « Écarts budget réel ».
+# Le contenu (datasets, widgets, mise en page) est dans le .lvdash.json, généré avec :
+#   databricks bundle generate dashboard --existing-id <id> --force
+# Pour le modifier : on l'édite dans l'interface, puis on régénère le JSON.
+
+resources:
+  dashboards:
+    ecarts:
+      display_name: "Écarts budget réel"
+      file_path: ../src/dashboards/ecarts.lvdash.json
+
+      # Warehouse trouvé par son NOM (variable « lookup ») : pas d'ID en dur.
+      warehouse_id: ${var.warehouse_id}
+
+      # Les requêtes du dashboard n'ont pas de préfixe catalog.schema :
+      # le bundle injecte celui de l'environnement (cloture_dev en dev, cloture en prod).
+      dataset_catalog: ${var.catalog}
+      dataset_schema: ${var.schema}

@@ -1,8 +1,7 @@
 # Portail de clôture mensuelle — définition du bundle.
 #
-# Différence avec le premier projet : ce fichier reste COURT.
-# Chaque ressource (jobs, app, dashboard) vit dans son propre fichier sous resources/,
-# inclus ci-dessous. C'est l'organisation standard dès qu'un projet grossit.
+# Ce fichier reste COURT : chaque ressource (jobs, app, dashboard) vit dans son propre
+# fichier sous resources/, inclus ci-dessous.
 
 bundle:
   name: portail-cloture
@@ -16,6 +15,11 @@ variables:
     default: workspace
   schema:
     description: Schéma du projet (différent selon l'environnement)
+  warehouse_id:
+    description: SQL Warehouse utilisé par le dashboard (et plus tard par l'application)
+    # « lookup » : la CLI cherche l'ID à partir du nom au moment du déploiement.
+    lookup:
+      warehouse: "Serverless Starter Warehouse"
 
 targets:
   dev:
@@ -24,7 +28,6 @@ targets:
     workspace:
       host: https://dbc-18ef0795-e41e.cloud.databricks.com
     variables:
-      # Chaque environnement a SES données : un test en dev ne touche jamais la prod.
       schema: cloture_dev
 
   # La cible "prod" sera ajoutée en phase 7, avec un service principal dédié.

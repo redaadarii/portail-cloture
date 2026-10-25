@@ -13,6 +13,7 @@ coverage/
 
 # Python
 __pycache__/
+.pytest_cache/
 .venv/
 
 # Fichiers Excel : exclus, SAUF les jeux de test du projet (versionnés volontairement)
