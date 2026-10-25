@@ -46,7 +46,7 @@ pytest tests/
 - [x] Phase 2a — Traitements : import générique, contrôles testés, tâche conditionnelle, écarts
 - [x] Phase 2b — Dashboard AI/BI rafraîchi par le job
 - [x] Phase 3 — Application : socle Next.js, SQL Warehouse, identité et rôles
-- [ ] Phase 4 — Catalogue de traitements piloté par configuration
+- [x] Phase 4 — Catalogue de traitements piloté par configuration
 - [ ] Phase 5 — Workflow de validation et historique
 - [ ] Phase 6 — Tests automatisés (Vitest)
 - [ ] Phase 7 — Industrialisation : prod, service principal, GitHub Actions

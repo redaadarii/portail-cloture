@@ -10,14 +10,15 @@
 export type Role = "LECTEUR" | "OPERATEUR" | "ADMIN";
 
 export type Action =
-  | "consulter" // voir le statut des traitements
-  | "lancer_import" // déposer un fichier et lancer le job
+  | "consulter" // voir le tableau de bord, le catalogue et les demandes
+  | "soumettre_demande" // remplir un formulaire du catalogue et soumettre une demande
+  | "valider_demande" // approuver / rejeter les demandes des autres (phase 5)
   | "voir_detail_technique"; // lien vers le run Databricks, messages techniques
 
 const DROITS: Record<Role, Action[]> = {
   LECTEUR: ["consulter"],
-  OPERATEUR: ["consulter", "lancer_import"],
-  ADMIN: ["consulter", "lancer_import", "voir_detail_technique"],
+  OPERATEUR: ["consulter", "soumettre_demande"],
+  ADMIN: ["consulter", "soumettre_demande", "valider_demande", "voir_detail_technique"],
 };
 
 export const LIBELLES_ROLES: Record<Role, string> = {
